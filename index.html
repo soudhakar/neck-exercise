@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="10-minute guided neck exercise routine to relieve brain fog and tension">
+    <title>Neck Exercise - Brain Fog Relief</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 Neck Exercise</h1>
+            <p class="subtitle">10-Minute Brain Fog Relief</p>
+        </header>
+
+        <main id="app">
+            <!-- Welcome Screen -->
+            <section id="welcome-screen" class="screen active">
+                <div class="welcome-content">
+                    <div class="emoji-large">🧘</div>
+                    <h2>Welcome to Your Neck Exercise</h2>
+                    <p>This 10-minute guided routine will help relieve tension and improve circulation to your brain.</p>
+
+                    <div class="benefits">
+                        <h3>Benefits:</h3>
+                        <ul>
+                            <li>✓ Reduce neck tension</li>
+                            <li>✓ Improve blood flow</li>
+                            <li>✓ Clear brain fog</li>
+                            <li>✓ Better posture</li>
+                        </ul>
+                    </div>
+
+                    <button id="start-btn" class="btn btn-primary">Start Exercise</button>
+                </div>
+            </section>
+
+            <!-- Exercise Screen -->
+            <section id="exercise-screen" class="screen">
+                <div class="exercise-container">
+                    <!-- Timer Display -->
+                    <div class="timer-section">
+                        <div class="timer-display">
+                            <span id="timer-minutes">10</span>:<span id="timer-seconds">00</span>
+                        </div>
+                        <p class="timer-label">Total Time</p>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-bar-container">
+                        <div id="progress-bar" class="progress-bar"></div>
+                    </div>
+
+                    <!-- Exercise Info -->
+                    <div class="exercise-info">
+                        <div class="exercise-number">
+                            <span id="exercise-count">1</span> / 6
+                        </div>
+                        <h2 id="exercise-name">Exercise Name</h2>
+
+                        <div class="exercise-emoji">
+                            <span id="exercise-emoji">🧘</span>
+                        </div>
+
+                        <!-- Exercise Details -->
+                        <div class="exercise-details">
+                            <div class="detail-item">
+                                <label>Duration:</label>
+                                <span id="exercise-duration">0:00</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Instructions:</label>
+                                <p id="exercise-instructions">Instructions will appear here</p>
+                            </div>
+                            <div class="detail-item tips">
+                                <label>💡 Tips:</label>
+                                <p id="exercise-tips">Tips will appear here</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="controls">
+                        <button id="pause-btn" class="btn btn-secondary">Pause</button>
+                        <button id="skip-btn" class="btn btn-tertiary">Skip Exercise</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Completion Screen -->
+            <section id="completion-screen" class="screen">
+                <div class="completion-content">
+                    <div class="celebration">
+                        <div class="emoji-large">🎉</div>
+                        <h2>Excellent Work!</h2>
+                        <p>You've completed your 10-minute neck exercise routine.</p>
+
+                        <div class="completion-stats">
+                            <div class="stat">
+                                <div class="stat-value">10</div>
+                                <div class="stat-label">Minutes</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">6</div>
+                                <div class="stat-label">Exercises</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">100%</div>
+                                <div class="stat-label">Complete</div>
+                            </div>
+                        </div>
+
+                        <div class="completion-message">
+                            <h3>How do you feel?</h3>
+                            <p>You should notice improved circulation, reduced neck tension, and clearer thinking. Great job maintaining your wellness!</p>
+                        </div>
+
+                        <button id="restart-btn" class="btn btn-primary">Do Another Round</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
