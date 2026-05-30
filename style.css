@@ -14,8 +14,8 @@
     --transition: all 0.3s ease;
 }
 
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
+/* Dark Mode Support - Disabled for better GitHub Pages compatibility */
+/* @media (prefers-color-scheme: dark) {
     :root {
         --primary-color: #4a90a4;
         --secondary-color: #5ba3c4;
@@ -26,7 +26,7 @@
         --text-light: #b0bcc4;
         --border: #3d4d5c;
     }
-}
+} */
 
 /* Reset & Base Styles */
 * {
