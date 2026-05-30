@@ -76,6 +76,39 @@ header h1 {
 .subtitle {
     font-size: 0.95rem;
     opacity: 0.9;
+    margin-bottom: 0.75rem;
+}
+
+/* Navigation Tabs */
+.nav-tabs {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid transparent;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tab-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.tab-btn.tab-active {
+    background: white;
+    color: var(--primary-color);
 }
 
 /* Main Content */
@@ -413,6 +446,152 @@ main {
     font-size: 0.9rem;
 }
 
+.completion-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Habit Tracker Screen */
+.habit-container {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 16px var(--shadow);
+    width: 100%;
+    max-width: 600px;
+}
+
+.habit-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, var(--background) 0%, rgba(46, 204, 113, 0.1) 100%);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 2px solid var(--border);
+    transition: var(--transition);
+}
+
+.stat-card:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-number {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    line-height: 1.2;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.35rem;
+}
+
+.streak-card {
+    background: linear-gradient(135deg, rgba(74, 144, 164, 0.15) 0%, rgba(46, 204, 113, 0.1) 100%);
+}
+
+.percentage-card {
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(74, 144, 164, 0.15) 100%);
+}
+
+/* Calendar Section */
+.calendar-section {
+    margin-bottom: 2rem;
+}
+
+.calendar-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.calendar-hint {
+    color: var(--text-light);
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(28px, 1fr));
+    gap: 6px;
+    margin-bottom: 1.5rem;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    background: var(--border);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    min-width: 28px;
+    min-height: 28px;
+    border: 2px solid transparent;
+}
+
+.calendar-day:hover {
+    border-color: var(--text-light);
+    transform: scale(1.1);
+}
+
+.calendar-day.completed {
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--primary-color) 100%);
+    color: white;
+}
+
+.calendar-day.completed::after {
+    content: '✓';
+    font-size: 0.8rem;
+}
+
+.calendar-day.today {
+    border-color: var(--primary-color);
+    border-width: 2px;
+}
+
+/* Habit Controls */
+.habit-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.btn-tertiary {
+    background: transparent;
+    color: #e74c3c;
+    border: 2px solid #e74c3c;
+}
+
+.btn-tertiary:hover {
+    background: rgba(231, 76, 60, 0.1);
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 480px) {
     header h1 {
@@ -461,6 +640,37 @@ main {
 
     .stat-value {
         font-size: 1.5rem;
+    }
+
+    .habit-container {
+        padding: 1rem;
+    }
+
+    .habit-stats {
+        gap: 0.75rem;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+
+    .stat-icon {
+        font-size: 1.5rem;
+    }
+
+    .stat-number {
+        font-size: 1.3rem;
+    }
+
+    .calendar-grid {
+        grid-template-columns: repeat(auto-fit, minmax(24px, 1fr));
+        gap: 4px;
+    }
+
+    .calendar-day {
+        min-width: 24px;
+        min-height: 24px;
+        font-size: 0.6rem;
     }
 
     main {

@@ -65,11 +65,25 @@ let appState = {
 const welcomeScreen = document.getElementById('welcome-screen');
 const exerciseScreen = document.getElementById('exercise-screen');
 const completionScreen = document.getElementById('completion-screen');
+const habitScreen = document.getElementById('habit-screen');
 
 const startBtn = document.getElementById('start-btn');
 const pauseBtn = document.getElementById('pause-btn');
 const skipBtn = document.getElementById('skip-btn');
 const restartBtn = document.getElementById('restart-btn');
+const viewHabitsBtn = document.getElementById('view-habits-btn');
+const backToExerciseBtn = document.getElementById('back-to-exercise-btn');
+const resetDataBtn = document.getElementById('reset-data-btn');
+
+// Tab buttons
+const tabExerciseBtn = document.getElementById('tab-exercise');
+const tabHabitsBtn = document.getElementById('tab-habits');
+
+// Habit tracker elements
+const streakCount = document.getElementById('streak-count');
+const percentageCount = document.getElementById('percentage-count');
+const totalCount = document.getElementById('total-count');
+const calendarGrid = document.getElementById('calendar-grid');
 
 const timerMinutes = document.getElementById('timer-minutes');
 const timerSeconds = document.getElementById('timer-seconds');
@@ -97,6 +111,11 @@ function setupEventListeners() {
     pauseBtn.addEventListener('click', togglePause);
     skipBtn.addEventListener('click', skipExercise);
     restartBtn.addEventListener('click', restartSession);
+    viewHabitsBtn.addEventListener('click', () => showHabitScreen(true));
+    backToExerciseBtn.addEventListener('click', () => showWelcomeScreen());
+    resetDataBtn.addEventListener('click', resetHabitData);
+    tabExerciseBtn.addEventListener('click', () => showWelcomeScreen());
+    tabHabitsBtn.addEventListener('click', () => showHabitScreen(false));
 }
 
 // Start Exercise
@@ -115,19 +134,44 @@ function showWelcomeScreen() {
     welcomeScreen.classList.add('active');
     exerciseScreen.classList.remove('active');
     completionScreen.classList.remove('active');
+    habitScreen.classList.remove('active');
+    updateTabButtons('exercise');
 }
 
 function showExerciseScreen() {
     welcomeScreen.classList.remove('active');
     exerciseScreen.classList.add('active');
     completionScreen.classList.remove('active');
+    habitScreen.classList.remove('active');
+    updateTabButtons('exercise');
 }
 
 function showCompletionScreen() {
     welcomeScreen.classList.remove('active');
     exerciseScreen.classList.remove('active');
     completionScreen.classList.add('active');
+    habitScreen.classList.remove('active');
     clearTimeout(appState.timerInterval);
+    updateTabButtons('exercise');
+}
+
+function showHabitScreen(fromCompletion = false) {
+    welcomeScreen.classList.remove('active');
+    exerciseScreen.classList.remove('active');
+    completionScreen.classList.remove('active');
+    habitScreen.classList.add('active');
+    updateTabButtons('habits');
+    renderHabitTracker();
+}
+
+function updateTabButtons(active) {
+    if (active === 'exercise') {
+        tabExerciseBtn.classList.add('tab-active');
+        tabHabitsBtn.classList.remove('tab-active');
+    } else {
+        tabExerciseBtn.classList.remove('tab-active');
+        tabHabitsBtn.classList.add('tab-active');
+    }
 }
 
 // Timer Logic
@@ -238,6 +282,7 @@ function completeSession() {
     appState.sessionStarted = false;
     appState.remainingTime = appState.totalTime;
     clearInterval(appState.timerInterval);
+    recordCompletion();
     clearState();
     showCompletionScreen();
 }
@@ -297,6 +342,148 @@ function loadState() {
 
 function clearState() {
     localStorage.removeItem('neckExerciseState');
+}
+
+// Habit Tracking Functions
+function recordCompletion() {
+    const today = new Date().toISOString().split('T')[0];
+    let history = loadHabitHistory();
+
+    // Check if today is already recorded
+    const todayExists = history.completions.some(c => c.date.split('T')[0] === today);
+
+    if (!todayExists) {
+        history.completions.push({
+            date: new Date().toISOString(),
+            completed: true,
+            manual: false
+        });
+        localStorage.setItem('habitHistory', JSON.stringify(history));
+    }
+}
+
+function loadHabitHistory() {
+    const saved = localStorage.getItem('habitHistory');
+    if (saved) {
+        try {
+            return JSON.parse(saved);
+        } catch (e) {
+            console.error('Error loading habit history:', e);
+            return { completions: [] };
+        }
+    }
+    return { completions: [] };
+}
+
+function getCompletedDates() {
+    const history = loadHabitHistory();
+    const completed = new Set();
+    history.completions.forEach(c => {
+        const date = c.date.split('T')[0];
+        completed.add(date);
+    });
+    return completed;
+}
+
+function calculateStreak() {
+    const completed = getCompletedDates();
+    let streak = 0;
+    const today = new Date();
+
+    for (let i = 0; i < 365; i++) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const dateStr = date.toISOString().split('T')[0];
+
+        if (completed.has(dateStr)) {
+            streak++;
+        } else if (i > 0) {
+            break;
+        }
+    }
+
+    return streak;
+}
+
+function calculatePercentage() {
+    const completed = getCompletedDates();
+    return Math.round((completed.size / 365) * 100);
+}
+
+function toggleDay(dateStr) {
+    let history = loadHabitHistory();
+    const index = history.completions.findIndex(c => c.date.split('T')[0] === dateStr);
+
+    if (index !== -1) {
+        // Remove if exists
+        history.completions.splice(index, 1);
+    } else {
+        // Add if doesn't exist
+        history.completions.push({
+            date: dateStr + 'T12:00:00.000Z',
+            completed: true,
+            manual: true
+        });
+    }
+
+    localStorage.setItem('habitHistory', JSON.stringify(history));
+    renderHabitTracker();
+}
+
+function renderHabitTracker() {
+    const streak = calculateStreak();
+    const percentage = calculatePercentage();
+    const completed = getCompletedDates();
+    const totalDays = completed.size;
+
+    // Update stats
+    streakCount.textContent = streak;
+    percentageCount.textContent = percentage + '%';
+    totalCount.textContent = totalDays;
+
+    // Render calendar
+    renderCalendar(completed);
+}
+
+function renderCalendar(completed) {
+    calendarGrid.innerHTML = '';
+    const today = new Date();
+
+    for (let i = 364; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const dateStr = date.toISOString().split('T')[0];
+
+        const dayEl = document.createElement('div');
+        dayEl.className = 'calendar-day';
+
+        if (completed.has(dateStr)) {
+            dayEl.classList.add('completed');
+        }
+
+        const todayStr = today.toISOString().split('T')[0];
+        if (dateStr === todayStr) {
+            dayEl.classList.add('today');
+        }
+
+        dayEl.addEventListener('click', () => toggleDay(dateStr));
+        dayEl.setAttribute('data-date', dateStr);
+        dayEl.setAttribute('title', formatDateForDisplay(dateStr));
+
+        calendarGrid.appendChild(dayEl);
+    }
+}
+
+function formatDateForDisplay(dateStr) {
+    const date = new Date(dateStr + 'T00:00:00');
+    return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+}
+
+function resetHabitData() {
+    if (confirm('Are you sure you want to reset all habit tracking data? This cannot be undone.')) {
+        localStorage.removeItem('habitHistory');
+        renderHabitTracker();
+    }
 }
 
 // Prevent accidental page exit during exercise

@@ -12,6 +12,10 @@
         <header>
             <h1>🧠 Neck Exercise</h1>
             <p class="subtitle">10-Minute Brain Fog Relief</p>
+            <nav id="nav-tabs" class="nav-tabs">
+                <button id="tab-exercise" class="tab-btn tab-active" data-screen="exercise">Exercise</button>
+                <button id="tab-habits" class="tab-btn" data-screen="habits">Habits</button>
+            </nav>
         </header>
 
         <main id="app">
@@ -116,7 +120,55 @@
                             <p>You should notice improved circulation, reduced neck tension, and clearer thinking. Great job maintaining your wellness!</p>
                         </div>
 
-                        <button id="restart-btn" class="btn btn-primary">Do Another Round</button>
+                        <div class="completion-buttons">
+                            <button id="restart-btn" class="btn btn-primary">Do Another Round</button>
+                            <button id="view-habits-btn" class="btn btn-secondary">View Habit Tracker</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Habit Tracker Screen -->
+            <section id="habit-screen" class="screen">
+                <div class="habit-container">
+                    <!-- Stats Section -->
+                    <div class="habit-stats">
+                        <div class="stat-card streak-card">
+                            <div class="stat-icon">🔥</div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="streak-count">0</div>
+                                <div class="stat-label">Day Streak</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card percentage-card">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="percentage-count">0%</div>
+                                <div class="stat-label">Complete</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card total-card">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="total-count">0</div>
+                                <div class="stat-label">Days Done</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calendar Section -->
+                    <div class="calendar-section">
+                        <h3>Your 365-Day Journey</h3>
+                        <p class="calendar-hint">Green = Completed • Gray = Not Completed • Click to toggle</p>
+                        <div id="calendar-grid" class="calendar-grid"></div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="habit-controls">
+                        <button id="back-to-exercise-btn" class="btn btn-secondary">Back to Exercise</button>
+                        <button id="reset-data-btn" class="btn btn-tertiary">Reset Data</button>
                     </div>
                 </div>
             </section>
