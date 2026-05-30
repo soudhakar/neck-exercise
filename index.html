@@ -3,40 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="10-minute guided neck exercise routine to relieve brain fog and tension">
-    <title>Neck Exercise - Brain Fog Relief</title>
+    <meta name="description" content="Multi-routine wellness app with habit tracking for neck, back pain, and night brushing">
+    <title>Wellness Habits - Track Your Health</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🧠 Neck Exercise</h1>
-            <p class="subtitle">10-Minute Brain Fog Relief</p>
+            <h1>💪 Wellness Habits</h1>
+            <p class="subtitle">Your Daily Wellness Routines</p>
             <nav id="nav-tabs" class="nav-tabs">
-                <button id="tab-exercise" class="tab-btn tab-active" data-screen="exercise">Exercise</button>
+                <button id="tab-exercise" class="tab-btn tab-active" data-screen="exercise">Routines</button>
                 <button id="tab-habits" class="tab-btn" data-screen="habits">Habits</button>
             </nav>
         </header>
 
         <main id="app">
+            <!-- Menu Screen -->
+            <section id="menu-screen" class="screen active">
+                <div class="menu-content">
+                    <h2>Choose Your Routine</h2>
+                    <p>Select a wellness routine to get started</p>
+
+                    <div class="routine-grid">
+                        <div class="routine-card" data-routine="neck">
+                            <div class="routine-emoji">🧠</div>
+                            <h3>Neck Exercise</h3>
+                            <p class="routine-subtitle">Brain Fog Relief</p>
+                            <p class="routine-description">10 minutes of neck tension relief</p>
+                            <div class="routine-stats">
+                                <span class="routine-streak">0 day streak 🔥</span>
+                                <span class="routine-percent">0% complete</span>
+                            </div>
+                        </div>
+
+                        <div class="routine-card" data-routine="backpain">
+                            <div class="routine-emoji">🔙</div>
+                            <h3>Lower Back Pain</h3>
+                            <p class="routine-subtitle">Back Tension Relief</p>
+                            <p class="routine-description">10 minutes of back exercises</p>
+                            <div class="routine-stats">
+                                <span class="routine-streak">0 day streak 🔥</span>
+                                <span class="routine-percent">0% complete</span>
+                            </div>
+                        </div>
+
+                        <div class="routine-card" data-routine="brushing">
+                            <div class="routine-emoji">🪥</div>
+                            <h3>Night Brushing</h3>
+                            <p class="routine-subtitle">Evening Oral Health</p>
+                            <p class="routine-description">5 minutes of dental care</p>
+                            <div class="routine-stats">
+                                <span class="routine-streak">0 day streak 🔥</span>
+                                <span class="routine-percent">0% complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Welcome Screen -->
-            <section id="welcome-screen" class="screen active">
+            <section id="welcome-screen" class="screen">
                 <div class="welcome-content">
-                    <div class="emoji-large">🧘</div>
-                    <h2>Welcome to Your Neck Exercise</h2>
-                    <p>This 10-minute guided routine will help relieve tension and improve circulation to your brain.</p>
+                    <div class="emoji-large" id="welcome-emoji">🧘</div>
+                    <h2 id="welcome-title">Neck Exercise</h2>
+                    <p id="welcome-description">Relieve tension and improve circulation to reduce brain fog</p>
 
                     <div class="benefits">
-                        <h3>Benefits:</h3>
-                        <ul>
-                            <li>✓ Reduce neck tension</li>
-                            <li>✓ Improve blood flow</li>
-                            <li>✓ Clear brain fog</li>
-                            <li>✓ Better posture</li>
+                        <h3>What you'll get:</h3>
+                        <ul id="routine-benefits">
+                            <li>✓ Relieve tension</li>
+                            <li>✓ Improve circulation</li>
+                            <li>✓ Better health</li>
                         </ul>
                     </div>
 
-                    <button id="start-btn" class="btn btn-primary">Start Exercise</button>
+                    <button id="start-btn" class="btn btn-primary">Start Routine</button>
+                    <button class="btn btn-tertiary back-to-menu-btn">Back to Menu</button>
                 </div>
             </section>
 
@@ -59,7 +102,7 @@
                     <!-- Exercise Info -->
                     <div class="exercise-info">
                         <div class="exercise-number">
-                            <span id="exercise-count">1</span> / 6
+                            <span id="exercise-count">1</span> / <span id="exercise-total">6</span>
                         </div>
                         <h2 id="exercise-name">Exercise Name</h2>
 
@@ -98,15 +141,15 @@
                     <div class="celebration">
                         <div class="emoji-large">🎉</div>
                         <h2>Excellent Work!</h2>
-                        <p>You've completed your 10-minute neck exercise routine.</p>
+                        <p>You've completed your wellness routine.</p>
 
                         <div class="completion-stats">
                             <div class="stat">
-                                <div class="stat-value">10</div>
+                                <div class="stat-value" id="completion-time">10</div>
                                 <div class="stat-label">Minutes</div>
                             </div>
                             <div class="stat">
-                                <div class="stat-value">6</div>
+                                <div class="stat-value" id="completion-exercises">6</div>
                                 <div class="stat-label">Exercises</div>
                             </div>
                             <div class="stat">
@@ -116,13 +159,14 @@
                         </div>
 
                         <div class="completion-message">
-                            <h3>How do you feel?</h3>
-                            <p>You should notice improved circulation, reduced neck tension, and clearer thinking. Great job maintaining your wellness!</p>
+                            <h3>Great job!</h3>
+                            <p>Keep up this routine to see improvements in your health and wellness.</p>
                         </div>
 
                         <div class="completion-buttons">
                             <button id="restart-btn" class="btn btn-primary">Do Another Round</button>
                             <button id="view-habits-btn" class="btn btn-secondary">View Habit Tracker</button>
+                            <button class="btn btn-tertiary back-to-menu-btn">Back to Menu</button>
                         </div>
                     </div>
                 </div>
@@ -131,6 +175,13 @@
             <!-- Habit Tracker Screen -->
             <section id="habit-screen" class="screen">
                 <div class="habit-container">
+                    <!-- Routine Selector -->
+                    <div class="habit-routine-selector">
+                        <button class="habit-routine-tab active" data-routine="neck">🧠 Neck</button>
+                        <button class="habit-routine-tab" data-routine="backpain">🔙 Back</button>
+                        <button class="habit-routine-tab" data-routine="brushing">🪥 Brushing</button>
+                    </div>
+
                     <!-- Stats Section -->
                     <div class="habit-stats">
                         <div class="stat-card streak-card">
@@ -167,7 +218,7 @@
 
                     <!-- Controls -->
                     <div class="habit-controls">
-                        <button id="back-to-exercise-btn" class="btn btn-secondary">Back to Exercise</button>
+                        <button class="btn btn-secondary back-to-menu-btn">Back to Menu</button>
                         <button id="reset-data-btn" class="btn btn-tertiary">Reset Data</button>
                     </div>
                 </div>
