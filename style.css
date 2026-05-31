@@ -351,21 +351,48 @@ main {
 
 .timer-section {
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.timer-label-top {
+    color: var(--text-light);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.15rem;
 }
 
 .timer-display {
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: bold;
     color: var(--primary-color);
     font-variant-numeric: tabular-nums;
     font-family: 'Courier New', monospace;
+    line-height: 1;
 }
 
-.timer-label {
+.timer-total-remaining {
     color: var(--text-light);
-    font-size: 0.85rem;
-    margin-top: 0.25rem;
+    font-size: 0.8rem;
+    margin-top: 0.35rem;
+    opacity: 0.8;
+}
+
+/* GIF container */
+.exercise-gif-container {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0.75rem;
+}
+
+.exercise-gif {
+    width: 100%;
+    max-width: 280px;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    background: var(--background);
 }
 
 /* Progress Bar */

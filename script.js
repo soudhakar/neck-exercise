@@ -74,6 +74,7 @@ const routines = {
                 name: 'Cat-Cow Stretch',
                 duration: 120,
                 emoji: '🐱',
+                gif: 'https://media1.tenor.com/m/LPwFzdwK9AEAAAAd/cat-cow-stretch.gif',
                 instructions: 'On hands and knees, alternate between arching your back (cow) and rounding it (cat). Move slowly and controlled, syncing with your breath.',
                 tips: 'This mobilizes your spine gently. Keep shoulders relaxed. Breathe in on cow, out on cat.'
             },
@@ -82,6 +83,7 @@ const routines = {
                 name: 'Knee-to-Chest Stretch',
                 duration: 120,
                 emoji: '🧘',
+                gif: 'https://media.giphy.com/media/xT0BKFEuHklb5TZfj2/giphy.gif',
                 instructions: 'Lying on your back, pull one knee toward your chest. Hold for 30 seconds, then switch legs. Keep your lower back pressed to the floor.',
                 tips: 'Great for lower back relief. Don\'t force the stretch. This eases tension in the lower back and glutes.'
             },
@@ -90,6 +92,7 @@ const routines = {
                 name: 'Pelvic Tilts',
                 duration: 90,
                 emoji: '↕️',
+                gif: 'https://media.giphy.com/media/l4KhIOd5A45rFJJGo/giphy.gif',
                 instructions: 'Lying on your back with knees bent, tilt your pelvis to engage your core. Rock gently between anterior and posterior tilts.',
                 tips: 'Strengthen your core to support your back. Controlled movement is key. Move only as much as feels natural.'
             },
@@ -98,6 +101,7 @@ const routines = {
                 name: 'Lower Back Rotation',
                 duration: 90,
                 emoji: '🔄',
+                gif: 'https://gymvisual.com/img/p/2/7/2/9/6/27296.gif',
                 instructions: 'Lying on your back with knees bent, gently drop both knees to one side. Hold for 30 seconds, then switch sides.',
                 tips: 'Gentle rotation promotes mobility and eases stiffness. Keep your shoulders flat on the ground.'
             },
@@ -106,6 +110,7 @@ const routines = {
                 name: 'Glute Bridge',
                 duration: 90,
                 emoji: '🌉',
+                gif: 'https://media1.tenor.com/m/i5B_Un9s7woAAAAd/glute-bridge-exercise.gif',
                 instructions: 'Lying on your back with knees bent, lift your hips to create a straight line from knees to shoulders. Hold and squeeze for 2-3 seconds.',
                 tips: 'Strengthens glutes which support the back. Control the movement. Do 15-20 reps.'
             },
@@ -114,6 +119,7 @@ const routines = {
                 name: 'Child\'s Pose',
                 duration: 90,
                 emoji: '🙏',
+                gif: 'https://gymvisual.com/img/p/2/6/0/1/3/26013.gif',
                 instructions: 'Kneel and sink hips back to heels, extending arms forward. Rest your forehead on the mat and breathe deeply.',
                 tips: 'Final relaxation stretch. This gently decompresses the lower back. Stay as long as needed.'
             }
@@ -561,6 +567,23 @@ function checkExerciseComplete() {
     }
 }
 
+function getExerciseRemainingTime() {
+    const routineId = appState.currentRoutineId;
+    const routine = getRoutine(routineId);
+    const routineState = getRoutineState(routineId);
+    const timeSpent = routine.totalTime - routineState.remainingTime;
+    let timeAccum = 0;
+
+    for (let i = 0; i < routine.exercises.length; i++) {
+        const nextTimeAccum = timeAccum + routine.exercises[i].duration;
+        if (timeSpent < nextTimeAccum) {
+            return nextTimeAccum - timeSpent; // seconds left in this exercise
+        }
+        timeAccum = nextTimeAccum;
+    }
+    return 0;
+}
+
 function updateDisplay() {
     updateTimer();
     updateProgressBar();
@@ -570,11 +593,21 @@ function updateDisplay() {
 function updateTimer() {
     const routineId = appState.currentRoutineId;
     const routineState = getRoutineState(routineId);
-    const minutes = Math.floor(routineState.remainingTime / 60);
-    const seconds = routineState.remainingTime % 60;
 
-    timerMinutes.textContent = String(minutes).padStart(2, '0');
-    timerSeconds.textContent = String(seconds).padStart(2, '0');
+    // Per-exercise countdown (big display)
+    const exRemaining = getExerciseRemainingTime();
+    const exMin = Math.floor(exRemaining / 60);
+    const exSec = exRemaining % 60;
+    timerMinutes.textContent = String(exMin).padStart(2, '0');
+    timerSeconds.textContent = String(exSec).padStart(2, '0');
+
+    // Total session countdown (small display)
+    const totalMin = Math.floor(routineState.remainingTime / 60);
+    const totalSec = routineState.remainingTime % 60;
+    const totalEl = document.getElementById('total-remaining');
+    if (totalEl) {
+        totalEl.textContent = `${String(totalMin).padStart(2,'0')}:${String(totalSec).padStart(2,'0')} total remaining`;
+    }
 }
 
 function updateProgressBar() {
@@ -587,13 +620,14 @@ function updateProgressBar() {
 }
 
 function updateExerciseInfo() {
-    const routine = getRoutine(appState.currentRoutineId);
-    const routineState = getRoutineState(appState.currentRoutineId);
+    const routineId = appState.currentRoutineId;
+    const routine = getRoutine(routineId);
+    const routineState = getRoutineState(routineId);
     const currentExercise = routine.exercises[routineState.currentExerciseIndex];
 
-    exerciseEmoji.textContent = currentExercise.emoji;
     exerciseName.textContent = currentExercise.name;
     exerciseCount.textContent = currentExercise.id;
+    document.getElementById('exercise-total').textContent = routine.exercises.length;
 
     const mins = Math.floor(currentExercise.duration / 60);
     const secs = currentExercise.duration % 60;
@@ -601,6 +635,28 @@ function updateExerciseInfo() {
 
     exerciseInstructions.textContent = currentExercise.instructions;
     exerciseTips.textContent = currentExercise.tips;
+
+    // Show GIF for backpain routine, emoji for others
+    const gifContainer = document.getElementById('exercise-gif-container');
+    const emojiContainer = document.querySelector('.exercise-emoji');
+
+    if (routineId === 'backpain' && currentExercise.gif) {
+        if (gifContainer) {
+            gifContainer.style.display = 'block';
+            const gifImg = document.getElementById('exercise-gif');
+            if (gifImg && gifImg.src !== currentExercise.gif) {
+                gifImg.src = currentExercise.gif;
+                gifImg.alt = currentExercise.name;
+            }
+        }
+        if (emojiContainer) emojiContainer.style.display = 'none';
+    } else {
+        if (gifContainer) gifContainer.style.display = 'none';
+        if (emojiContainer) {
+            emojiContainer.style.display = 'block';
+            exerciseEmoji.textContent = currentExercise.emoji;
+        }
+    }
 }
 
 // ============================================================
