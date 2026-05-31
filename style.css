@@ -203,6 +203,25 @@ header h1 {
     color: var(--accent-color);
 }
 
+.btn-history {
+    margin-top: 1rem;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text-light);
+    border-radius: 6px;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: var(--transition);
+    width: 100%;
+}
+
+.btn-history:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: rgba(74, 144, 164, 0.08);
+}
+
 /* Main Content */
 main {
     flex: 1;

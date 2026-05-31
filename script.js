@@ -305,16 +305,29 @@ function setupEventListeners() {
     pauseBtn.addEventListener('click', togglePause);
     skipBtn.addEventListener('click', skipExercise);
     restartBtn.addEventListener('click', restartSession);
-    viewHabitsBtn.addEventListener('click', () => showHabitScreen());
+    // After completing a routine, show THAT routine's habit tracker
+    viewHabitsBtn.addEventListener('click', () => showHabitScreen(appState.currentRoutineId));
     resetDataBtn.addEventListener('click', resetHabitData);
 
     tabExerciseBtn.addEventListener('click', () => showMenuScreen());
-    tabHabitsBtn.addEventListener('click', () => showHabitScreen());
+    // Default to current routine when clicking Habits tab from anywhere
+    tabHabitsBtn.addEventListener('click', () => showHabitScreen(appState.currentRoutineId));
 
     menuBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+            // Don't trigger routine start if "View History" button was clicked inside the card
+            if (e.target.classList.contains('btn-history')) return;
             const routineId = btn.getAttribute('data-routine');
             startRoutine(routineId);
+        });
+    });
+
+    // "View History" buttons on each menu card
+    document.querySelectorAll('.btn-history').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const routineId = btn.getAttribute('data-history');
+            showHabitScreen(routineId);
         });
     });
 
@@ -375,15 +388,21 @@ function showCompletionScreen() {
     updateTabButtons('exercise');
 }
 
-function showHabitScreen(routineId = 'neck') {
+function showHabitScreen(routineId) {
+    // Default to current active routine, fallback to neck
+    routineId = routineId || appState.currentRoutineId || 'neck';
+
     menuScreen.classList.remove('active');
     welcomeScreen.classList.remove('active');
     exerciseScreen.classList.remove('active');
     completionScreen.classList.remove('active');
     habitScreen.classList.add('active');
     updateTabButtons('habits');
+
+    // Specifically target habit tabs, NOT menu cards (both have data-routine)
     habitRoutineTabs.forEach(t => t.classList.remove('active'));
-    document.querySelector(`[data-routine="${routineId}"]`)?.classList.add('active');
+    document.querySelector(`.habit-routine-tab[data-routine="${routineId}"]`)?.classList.add('active');
+
     renderHabitTracker(routineId);
 }
 
